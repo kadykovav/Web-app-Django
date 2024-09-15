@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block mainmenu %}{% endblock %}
+{% block content %}
+
+
+
+
+<div class="container-fluid align-items-center" style="min-height: 1000px;">
+
+    <div class="row align-items-center" style="height: 730px;">
+
+        <div class="col">
+
+        </div>
+        <div class="col">
+            <img height="32" aria-label="Bootstrap" class="bi me-2" src="/static/images/logo2.png" ><br><br>
+
+            <h1 class="h3 mb-3 fw-normal">{{ title }}</h1>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}"/>
+                <div class="">{{ form.non_field_errors }}</div>
+                {% for f in form %}
+                <p><label for="{{ f.id_for_label }}">{{f.label}}</label>
+                    {{ f }}
+                </p>
+                {% if f.errors %}
+                <div class="alert alert-danger">{{ f.errors }}</div>
+                {% endif %}
+                {% endfor %}
+                <p><button type="submit" class="btn btn-primary w-100 py-2">Регистрация</button> <a href="{% url 'users:login' %}">Уже есть аккаунт?</a> </p>
+            </form>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+</div>
+{% endblock %}

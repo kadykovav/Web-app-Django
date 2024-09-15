@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block mainmenu %}{%endblock%}
+{% block content %}
+
+<div class="container-fluid align-items-center" style="height: 730px;">
+
+    <div class="row align-items-center" style="height: 730px;">
+
+        <div class="col">
+
+        </div>
+        <div class="col">
+            <img height="32" aria-label="Bootstrap" class="bi me-2" src="/static/images/logo2.png" ><br><br>
+
+            <h1 class="h3 mb-3 fw-normal">Вход</h1>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}"/>
+                {{ form.as_p }}
+                <p><button type="submit" class="btn btn-primary w-100 py-2">Войти</button>
+
+            </form>
+            <p><a href="{% url 'users:registration' %}"><button class="btn btn-outline-primary w-100 py-2">Регистрация</button></a>
+                <p><a href="{% url 'users:password_reset'%}">Забыли пароль?</a>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
