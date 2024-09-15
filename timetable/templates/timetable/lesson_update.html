@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Сохранить</button>
+</form>
+<div class="d-flex">
+<button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" >Удаление</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+            <div class="modal-body">
+            Вы точно хотите удалить урок: "{{ timetable.teacher }} - {{timetable.student}}" на {{ timetable.start.date }}?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-bs-dismiss="modal" >Отменить</button>
+                <form method="post" action="{{ timetable.get_absolute_url }}delete">
+                    {% csrf_token %}
+                    <input class="btn btn-danger" type="submit" value="Удалить">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

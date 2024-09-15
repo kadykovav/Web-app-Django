@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+
+  <div class="card-body">
+    <h5 class="card-title">Урок {{ timetable.start.date }} с {{ timetable.start.time }} по {{ timetable.end.time }}</h5>
+
+    <p class="card-text">Ученик: {{ timetable.student }}</p>
+      <p class="card-text">Ученик: Учитель: {{ timetable.teacher }}</p>
+      <p class="card-text">Телефон: {{ timetable.student.phone }}</p>
+
+    <a href="{{ timetable.get_absolute_url }}update" class="btn btn-primary">Редактировать</a>
+  </div>
+</div>
+
+
+{% endblock %}

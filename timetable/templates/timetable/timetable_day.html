@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<h1> {{ today }} </h1>
+<nav>
+    <ul class="pagination">
+        <li class="page-item disabled">
+            <a class="page-link">Предыдущий</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">Следующий</a>
+        </li>
+    </ul>
+
+
+</nav>
+<a href="{% url 'timetable:lesson_create' %}"><button class="btn btn-outline-primary" type="button">Добавить урок</button></a>
+<br>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">№</th>
+        <th scope="col">Начало</th>
+        <th scope="col">Конец</th>
+        <th scope="col">Ученик</th>
+        <th scope="col">Учитель</th>
+        <th scope="col">Телефон</th>
+        <th scope="col">Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for t in timetable %}
+
+    <tr>
+        <td><a class="page-link" href="/">{{ t.id }}</a></td>
+        <th>{{ t.start.time }}</th>
+        <th>{{ t.end.time }}</th>
+        <td><a class="page-link" href="/">{{ t.student }}</a></td>
+        <td>{{ t.teacher }}</td>
+        <td>{{ t.student.phone }}</td>
+        <td>
+            <a href="{{ t.get_absolute_url }}"><img width="16" height="16" src="{% static 'images/external.png' %}"></a>
+            <a href="{{ t.get_absolute_url }}update"><img width="16" height="16" src="{% static 'images/edit.png' %}"></a>
+            <a href="{{ t.get_absolute_url }}delete"><img width="16" height="16" src="{% static 'images/delete.png' %}"></a>
+
+        </td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+<!--<div class="d-grid gap-2">
+    <button class="btn btn-outline-primary" type="button">Сохранить</button>
+</div>-->
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load theme_tags %}
+<div class="row g-5" xmlns="http://www.w3.org/1999/html">
+    <div class="col-md-3">
+{% get_themes as ct %}
+
+      <form method="get" action="{% url 'filter' %}">
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Темы постов
+      </button>
+    </h2>
+
+    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+
+
+    <ul class="list-group">
+
+
+      {% for t in ct.count_themes %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="form-check form-switch">
+
+        {% if t.slug in paginate_theme %}
+
+        <input class="form-check-input me-1" type="checkbox" value="{{ t.slug }}" id="{{ t.pk }}" name="theme" checked>
+        {% else %}
+        <input class="form-check-input me-1" type="checkbox" value="{{ t.slug }}" id="{{ t.pk }}" name="theme">
+        {% endif %}
+        <label class="form-check-label stretched-link" for="{{ t.pk }}">{{ t.theme }}</label>
+        <span class="badge bg-primary rounded-pill">{{t.count}}</span>
+      </div>
+      {% endfor%}
+
+
+</ul>
+
+
+        </div></div></div></div>
+
+        <div class="d-grid gap-1">
+
+        <button type="submit" class="btn btn-primary form-control">Применить</button>
+          {% if error_empty_list %}
+          <div class="invalid-feedback d-flex">
+        {{ error_empty_list }}
+          </div>
+          {% endif %}
+
+
+
+        <input type="reset" class="btn btn-secondary" value="Сбросить">
+        </div>
+      </form>
+
+
+
+    </div>
+
+
+    <div class="col-md-6">
+{% if user.is_superuser %}
+      <div class="d-grid gap-2">
+        <a href="{% url 'create'%}"><button class="btn btn-outline-info" type="button">Добавить пост</button></a>
+
+
+
+</div>
+      <hr class="my-3">
+      {% endif %}
+    {% for p in posts %}
+
+      <div class="col">
+          <div class="card shadow-sm">
+            {% if p.image %}
+                        <img src="{{ p.image.url }}" class="bd-placeholder-img card-img-top" role="img">
+            {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <title>Пост</title>
+              <rect width="100%" height="100%" fill="#55595c"></rect>
+              <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">
+              {{p.title}}
+              </text>
+            </svg>
+            {% endif %}
+            <div class="card-body">
+              <p class="card-text">{{p.description}}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{{ p.get_absolute_url }}"><button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button></a>
+                  {%if user.is_superuser%}
+                  <a href="{% url 'update' p.slug%}"><button type="button" class="btn btn-sm btn-outline-secondary">Редактировать</button></a>
+                  {%endif%}
+                </div>
+                <small class="text-body-secondary">{{ p.time_create }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      <hr class="my-3">
+    {% endfor %}
+      <nav aria-label="Пример навигации по страницам">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}{% for i in paginate_theme %}&theme={{ i }}{% endfor %}"> &laquo;  </a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link"> &laquo;</a></li>
+    {% endif %}
+
+
+
+    {% for page in paginator.page_range %}
+    {% if page_obj.number == page %}
+        <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ page }}{% for i in paginate_theme %}&theme={{ i }}{% endfor %}">{{ page }}</a></li>
+
+    {% elif page <= page_obj.number|add:2 and page >= page_obj.number|add:-2 %}
+    <li class="page-item"><a class="page-link" href="?page={{page}}{% for i in paginate_theme %}&theme={{ i }}{% endfor %}">{{ page }}</a></li>
+    {%endif%}
+    {% endfor %}
+    {{ page.paginator.num_page }}
+
+    {% if page_obj.has_next %}
+    {% if not page_obj.number|add:3 >= page_obj.paginator.num_pages %}
+    <li class="page-item" aria-current="page"><a class="page-link" href="?page={{page_obj.number|add:3}}{% for i in paginate_theme %}&theme={{ i }}{% endfor %}">...</a></li>
+    {% endif %}
+    {% if page_obj.number|add:3 <= page_obj.paginator.num_pages %}
+        <li class="page-item" aria-current="page">
+          <a class="page-link" href="?page={{page_obj.paginator.num_pages}}{% for i in paginate_theme %}&theme={{ i }}{% endfor %}">{{page_obj.paginator.num_pages}}</a>
+        </li>
+
+    {%endif%}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}{% for i in paginate_theme %}&theme={{ i }}{% endfor %}"> &raquo; </a></li>
+    {% else %}
+        <li class="page-item disabled"><a class="page-link"> &raquo; </a></li>
+
+    {% endif %}
+  </ul>
+</nav>
+    </div>
+
+    <div class="col-md-3">
+      <div class="position-sticky" style="top: 2rem;">
+        <!--<div class="p-4 mb-3 bg-body-tertiary rounded">
+          <h4 class="fst-italic">Об</h4>
+          <p class="mb-0">
+            Настройте этот раздел таким образом, чтобы он немного рассказывал посетителям о вашей публикации, авторах, контенте или о чем-то еще. Решать только вам.          </p>
+        </div>-->
+
+        <div>
+          <!-- Здесь будет отображаться 3 последних поста -->
+          <h4 class="fst-italic"> Интересное </h4>
+          {% get_interesting as in %}
+          <ul class="list-unstyled">
+            {% for i in in.interesting %}
+
+            <li>
+              <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="{% url 'post' i.slug%}">
+                {% if i.image %}
+                <img src="{{i.image.url}}" height="96" width="100%" aria-hidden="true">
+                {% else %}
+                <svg class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+                {% endif %}
+                <div class="col-lg-8">
+                  <h6 class="mb-0">{{ i }}</h6>
+                  <small class="text-body-secondary">{{i.time_create}}</small>
+                </div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
