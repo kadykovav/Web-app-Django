@@ -43,35 +43,4 @@ class Teacher(models.Model):
         verbose_name = 'Учителя и их ученики'
         verbose_name_plural = 'Учителя и их ученики'
 
-# class Student(models.Model):
-#     student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return f'{self.student.first_name} {self.student.last_name}'
-#
-#     class Meta:
-#         verbose_name = 'Ученики'
-#         verbose_name_plural = 'Ученики'
-#
-#
-# class Teacher(models.Model):
-#     teacher = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return f'{self.teacher.first_name} {self.teacher.last_name}'
-#
-#     class Meta:
-#         verbose_name = 'Учителя'
-#         verbose_name_plural = 'Учителя'
-#
-#
-# class TeacherStudent(models.Model):
-#     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         verbose_name = 'Ученики учителей'
-#         verbose_name_plural = 'Ученики учителей'
-#
-#     def __str__(self):
-#         return f'{self.student.student.first_name} {self.student.student.last_name} - {self.teacher.teacher.first_name} {self.teacher.teacher.last_name}'
+
