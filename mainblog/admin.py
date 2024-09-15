@@ -25,11 +25,7 @@ class PostAdmin(admin.ModelAdmin):
         count = queryset.update(published=BlogPost.DRAFT)
         self.message_user(request, f'Помещено в черновик: {count}')
 
-    # @admin.display(description='Темы')
-    # def formfield_for_manytomany(self, db_field, request, **kwargs):
-    #     if db_field.name == 'theme':
-    #         kwargs['queryset'] = ThemePost.objects.all()
-    #         return super().formfield_for_manytomany(db_field=db_field, request=request, **kwargs)
+
 
 
 @admin.register(ThemePost)
