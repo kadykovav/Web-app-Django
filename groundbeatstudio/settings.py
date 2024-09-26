@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'GroundBeatDB',
         'USER': 'AdminGB',
-        'PASSWORD': 'ghJ23Mn1',
+        'PASSWORD': '********',
         'HOST': 'localhost',
         'PORT': '5432',
     }
