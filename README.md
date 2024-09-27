@@ -1,2 +1,2 @@
-# t-bank-contest-first
+# web-app-django
 Сайт на джанго
